@@ -17,7 +17,15 @@ jobs:
           node-version: 16
       - run: npm install
       - run: npm test
-
+      - name: Revert code on test failure
+        if: failure()
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.git.revert({
+              commit_hash: context.sha,
+              message: 'Reverting changes due to test failure'
+            })
   build-and-push-image:
     needs: build-and-test
     runs-on: ubuntu-latest
