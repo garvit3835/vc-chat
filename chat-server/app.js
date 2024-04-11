@@ -16,8 +16,8 @@ app.get("/data", (req, res) => {
 	});
 });
 
-const chatServer = app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`);
-});
+const chatServer = app.listen(port);
+
+
 
 module.exports = chatServer;
