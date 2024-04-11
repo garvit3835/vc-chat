@@ -6,7 +6,7 @@ const port = 5000;
 app.use(cors());
 
 app.get("/", (req, res) => {
-	res.send("Hello World! hello");
+	res.status(200).send("Hello World!");
 });
 
 app.get("/data", (req, res) => {
@@ -16,6 +16,8 @@ app.get("/data", (req, res) => {
 	});
 });
 
-app.listen(port, () => {
+const chatServer = app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`);
 });
+
+module.exports = chatServer;
