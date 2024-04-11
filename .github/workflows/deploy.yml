@@ -1,0 +1,45 @@
+name: Node.js Chat Server CI/CD
+
+on:
+  push:
+    branches: [chat-server]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install
+      - run: npm test
+
+  build-and-push-image:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install
+      - run: docker build -t your-dockerhub-username/chat-server .
+      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - run: docker push your-dockerhub-username/chat-server
+
+  deploy-to-kubernetes:
+    needs: build-and-push-image
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: azure/setup-kubectl@v2.0
+      - run: kubectl apply -f k8s
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
