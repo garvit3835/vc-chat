@@ -20,8 +20,7 @@ jobs:
       - name: Revert code on test failure
         if: failure()
         run: |
-          git reset --hard HEAD
-          git clean -df
+          git reset --hard HEAD^
   build-and-push-image:
     needs: build-and-test
     runs-on: ubuntu-latest
