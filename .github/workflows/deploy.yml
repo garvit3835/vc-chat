@@ -2,7 +2,11 @@ name: Node.js Chat Server CI/CD
 
 on:
   push:
-    branches: [chat-server]
+    branches: 
+      - chat-server
+  pull_request:
+    branches:
+      - chat-server
 
 jobs:
   build-and-test:
@@ -17,46 +21,37 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20.12.2
-      - name: Install dependencies and run tests
-        run: |
-          npm install
-          npm test || exit 1
-  revert-on-test-failure:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    if: failure()
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Set Git user identity
-        run: |
-          git config user.email "garvit3835@gmail.com"
-          git config user.name "garvit3835"
-      - name: Revert changes
-        run: git revert HEAD --no-edit
-      - name: Push reverted changes
-        run: |
-          git push https://$GITHUB_ACTOR:${{ secrets.GIT_TOKEN }}@github.com/garvit3835/venture_connect.git HEAD:chat-server --force
+      - run: npm install
+      - run: npm test
+
   build-and-push-image:
     needs: build-and-test
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./chat-server
+    if: github.event_name == 'push' && github.ref == 'refs/heads/chat-server'
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20.12.2
       - run: npm install
       - run: docker build -t garvit3835/chat-server .
-      - run: docker login -u garvit3835 -p ${{ secrets.DOCKER_PASSWORD }}
+      - run: docker login -u garvit3835 -p ${{ secrets.DOCKER_PASSWORD }} 
       - run: docker push garvit3835/chat-server
 
   deploy-to-kubernetes:
     needs: build-and-push-image
     runs-on: ubuntu-latest
-
+    if: github.event_name == 'push' && github.ref == 'refs/heads/chat-server'
     steps:
-      - uses: actions/checkout@v3
-      - uses: azure/setup-kubectl@v2.0
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Azure Setup Kubectl
+        uses: azure/setup-kubectl@v2.0
       - run: kubectl apply -f k8s
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
