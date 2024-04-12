@@ -36,11 +36,10 @@ jobs:
         run: git revert HEAD --no-edit
       - name: Push reverted changes
         run: |
-          git push origin HEAD:chat-server --force
+          git push https://$GITHUB_ACTOR:${{ secrets.GIT_TOKEN }}@github.com/garvit3835/venture_connect.git HEAD:chat-server --force
   build-and-push-image:
     needs: build-and-test
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -48,9 +47,7 @@ jobs:
           node-version: 16
       - run: npm install
       - run: docker build -t garvit3835/chat-server .
-      - run: docker login -u garvit3835 -p $DOCKER_PASSWORD
-        env:
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - run: docker login -u garvit3835 -p ${{ secrets.DOCKER_PASSWORD }}
       - run: docker push garvit3835/chat-server
 
   deploy-to-kubernetes:
