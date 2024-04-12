@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-server-deployment
+  labels:
+    name: chat-server-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: chat-server-pod
+  template:
+    metadata:
+      labels:
+        name: chat-server-pod
+    spec:
+      containers:
+        - name: chat-server-container
+          image: garvit3835/chat-server
+          ports:
+            - containerPort: 5000
