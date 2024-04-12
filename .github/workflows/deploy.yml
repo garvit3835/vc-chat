@@ -11,16 +11,29 @@ jobs:
       run:
         working-directory: ./chat-server
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 20.12.2
-      - run: npm install
-      - run: npm test
-      - name: Revert code on test failure
-        if: failure()
+      - name: Install dependencies and run tests
         run: |
-          git reset --hard HEAD^
+          npm install
+          npm test || exit 1
+  revert-on-test-failure:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Revert changes
+        run: git revert HEAD --no-edit
+      - name: Push reverted changes
+        run: |
+          git push origin HEAD:chat-server --force
+
   build-and-push-image:
     needs: build-and-test
     runs-on: ubuntu-latest
