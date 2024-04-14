@@ -60,12 +60,12 @@ jobs:
       - name: Set Azure AKS context
         uses: azure/aks-set-context@v1
         with:
-          cluster-name: your-aks-cluster-name
-          resource-group: your-resource-group-name
+          cluster-name: vc_cluster
+          resource-group: venture_connect
       - name: Apply deployment and service changes to AKS (using dedicated service account)
         run: |
           # Replace with the actual service account name and dedicated cluster role binding YAML
-          kubectl apply -f service-account.yaml
+          # kubectl apply -f service-account.yaml
           kubectl apply -f chat-server/k8s
   
       
