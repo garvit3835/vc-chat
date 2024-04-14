@@ -50,7 +50,7 @@ jobs:
       id-token: write     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Use Azure Service Principal with OIDC Flow
         uses: azure/login@v1
         with:
