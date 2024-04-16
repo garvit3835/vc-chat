@@ -50,6 +50,11 @@ jobs:
     permissions:
       id-token: write     
     steps:
+      - name: Checkout repository (master branch)
+        uses: actions/checkout@v3
+        with:
+          ref: chat-server
+
       - name: Azure Kubernetes set context
         uses: Azure/aks-set-context@v1
         with:
@@ -64,8 +69,8 @@ jobs:
         with:        
           # Path to the manifest files which will be used for deployment.
           manifests: |
-            chat-server/k8s/deployment.yml
-            chat-server/k8s/service.yml
+            k8s/deployment.yml
+            k8s/service.yml
           # Fully qualified resource URL of the image(s) to be used for substitutions on the manifest files Example: contosodemo.azurecr.io/helloworld:test
           # images: '${{secrets.DOCKER_LOGIN}}/githubactions-aks-demo:${{github.sha}}'
           # Name of a docker-registry secret that has already been set up within the cluster. Each of these secret names are added under imagePullSecrets field for the workloads found in the input manifest files
