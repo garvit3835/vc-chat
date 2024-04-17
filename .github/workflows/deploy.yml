@@ -57,7 +57,12 @@ jobs:
           resource-group: venture_connect
           # AKS Cluster Name
           cluster-name: vc_cluster
-
+          
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: chat-server
+        
       - name: Deploy to Kubernetes cluster
         uses: Azure/k8s-deploy@v1
         with:        
