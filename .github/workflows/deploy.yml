@@ -46,15 +46,8 @@ jobs:
 
   deploy-to-aks:
     needs: build-and-push-image
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write     
+    runs-on: ubuntu-latest    
     steps:
-      - name: Checkout repository (master branch)
-        uses: actions/checkout@v3
-        with:
-          ref: chat-server
-
       - name: Azure Kubernetes set context
         uses: Azure/aks-set-context@v1
         with:
@@ -64,6 +57,7 @@ jobs:
           resource-group: venture_connect
           # AKS Cluster Name
           cluster-name: vc_cluster
+
       - name: Deploy to Kubernetes cluster
         uses: Azure/k8s-deploy@v1
         with:        
@@ -71,11 +65,5 @@ jobs:
           manifests: |
             k8s/deployment.yml
             k8s/service.yml
-          # Fully qualified resource URL of the image(s) to be used for substitutions on the manifest files Example: contosodemo.azurecr.io/helloworld:test
-          # images: '${{secrets.DOCKER_LOGIN}}/githubactions-aks-demo:${{github.sha}}'
-          # Name of a docker-registry secret that has already been set up within the cluster. Each of these secret names are added under imagePullSecrets field for the workloads found in the input manifest files
-          # imagepullsecrets: docker-image-pull-secret
-          # deploy/promote/reject
+          images: '${{secrets.DOCKER_LOGIN}}/chat-server'
           action: deploy
-  
-      
