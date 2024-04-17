@@ -57,7 +57,7 @@ jobs:
           resource-group: venture_connect
           # AKS Cluster Name
           cluster-name: vc_cluster
-          
+
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
@@ -65,8 +65,7 @@ jobs:
         
       - name: Deploy to Kubernetes cluster
         uses: Azure/k8s-deploy@v1
-        with:        
-          # Path to the manifest files which will be used for deployment.
+        with:
           manifests: |
             k8s/deployment.yml
             k8s/service.yml
