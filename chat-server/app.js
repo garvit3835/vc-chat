@@ -9,6 +9,12 @@ app.get("/", (req, res) => {
 	res.status(200).send("Hello World!");
 });
 
+app.get("/random", (req, res) => {
+	res.status(200).send("random");
+});
+
+
+
 app.get("/data", (req, res) => {
 	res.json({
 		name: "Garvit",
