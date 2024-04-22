@@ -22,6 +22,7 @@ app.get("/data", (req, res) => {
 	});
 });
 
+
 const chatServer = app.listen(port);
 
 module.exports = chatServer;
