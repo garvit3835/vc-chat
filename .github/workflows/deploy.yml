@@ -57,7 +57,6 @@ jobs:
           resource-group: venture_connect
           # AKS Cluster Name
           cluster-name: vc_cluster
-          use-kubelogin: true
 
       - name: Checkout repository
         uses: actions/checkout@v3
