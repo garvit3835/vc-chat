@@ -13,6 +13,10 @@ app.get("/random", (req, res) => {
 	res.status(200).send("random");
 });
 
+app.get("/randoms", (req, res) => {
+	res.status(200).send("random");
+});
+
 
 
 app.get("/data", (req, res) => {
