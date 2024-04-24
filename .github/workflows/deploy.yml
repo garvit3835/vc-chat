@@ -24,9 +24,6 @@ jobs:
   build-and-push-image:
     needs: build-and-test
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./chat-server
     if: github.event_name == 'push'
     steps:
       - name: Checkout repository
