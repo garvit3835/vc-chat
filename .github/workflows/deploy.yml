@@ -3,17 +3,14 @@ name: Node.js Chat Server CI/CD
 on:
   push:
     branches: 
-      - chat-server
+      - main
   pull_request:
     branches:
-      - chat-server
+      - main
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./chat-server
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
