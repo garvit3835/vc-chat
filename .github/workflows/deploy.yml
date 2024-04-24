@@ -1,0 +1,73 @@
+name: Node.js Chat Server CI/CD
+
+on:
+  push:
+    branches: 
+      - chat-server
+  pull_request:
+    branches:
+      - chat-server
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./chat-server
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.12.2
+      - run: npm install
+      - run: npm test
+
+  build-and-push-image:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./chat-server
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.12.2
+      - run: npm install
+
+      - run: docker build -t ${{ secrets.DOCKER_LOGIN }}/chat-server .
+      - run: docker login -u ${{ secrets.DOCKER_LOGIN}} -p ${{ secrets.DOCKER_PASSWORD }} 
+      - run: docker push ${{ secrets.DOCKER_LOGIN }}/chat-server
+
+  deploy-to-aks:
+    needs: build-and-push-image
+    runs-on: ubuntu-latest    
+    steps:
+      - name: Azure Kubernetes set context
+        uses: Azure/aks-set-context@v1
+        with:
+          # Azure credentials i.e. output of `az ad sp create-for-rbac --sdk-auth`
+          creds: '${{secrets.AZURE_CREDENTIALS}}'
+          # Resource Group Name
+          resource-group: venture_connect
+          # AKS Cluster Name
+          cluster-name: vc_cluster
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: chat-server
+        
+      - name: Deploy to Kubernetes cluster
+        uses: Azure/k8s-deploy@v1
+        with:
+          manifests: |
+            k8s/deployment.yml
+            k8s/service.yml
+          images: '${{secrets.DOCKER_LOGIN}}/chat-server'
+          action: deploy
