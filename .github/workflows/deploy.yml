@@ -67,6 +67,7 @@ jobs:
         with:
           manifests: |
             k8s/deploy.yml
+            
             k8s/svc.yml
           images: '${{secrets.DOCKER_LOGIN}}/chat-server'
           action: deploy
