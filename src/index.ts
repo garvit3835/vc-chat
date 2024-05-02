@@ -28,7 +28,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 const chatServer = app.listen(5001, () => {
-  console.log("chat-server listening at port");
+  console.log("chat-server listening at 5001");
 });
 
 export default chatServer;

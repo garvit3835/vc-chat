@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: chat-server-container
-          image: garvit3835/chat-server
+          image: garvit3835/chat-server:latest
           ports:
             - containerPort: 5001
