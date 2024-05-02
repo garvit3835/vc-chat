@@ -17,7 +17,7 @@ RUN npm install --omit=dev
 COPY dist ./dist
 
 # Expose the port your app runs on
-EXPOSE 5001
+EXPOSE 5000
 
 # Command to run your app
 CMD ["node", "./dist/index.js"]

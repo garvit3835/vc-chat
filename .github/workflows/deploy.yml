@@ -66,8 +66,7 @@ jobs:
         uses: Azure/k8s-deploy@v1
         with:
           manifests: |
-            k8s/deploy.yml
-            
-            k8s/svc.yml
+            k8s/deployment.yml
+            k8s/service.yml
           images: '${{secrets.DOCKER_LOGIN}}/chat-server'
           action: deploy

@@ -27,7 +27,7 @@ app.get("/", (req: Request, res: Response) => {
   res.status(200).send("Hello World!");
 });
 
-const chatServer = app.listen(5001, () => {
+const chatServer = app.listen(5000, () => {
   console.log("chat-server listening at 5001");
 });
 
