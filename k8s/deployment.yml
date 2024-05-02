@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: chat-server-deploy
+  name: chat-server-deployment
   labels:
-    name: chat-server-deploy
+    name: chat-server-deployment
 spec:
   replicas: 2
   selector:
