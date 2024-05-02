@@ -42,6 +42,10 @@ jobs:
     needs: build-and-push-image
     runs-on: ubuntu-latest    
     steps:
+      - name: Checkout repository with clean cache
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Azure Kubernetes set context
         uses: Azure/aks-set-context@v1
         with:
