@@ -49,12 +49,12 @@ app.get("/", async (req: Request, res: Response) => {
   // Call the CPU-intensive task
   const primes = calculatePrimes();
 
-  res.status(200).send("Hello World!");
+  res.status(200).send("Hello World! yesss");
 });
 
 
 app.get("/test", async (req: Request, res: Response) => {
-  res.status(200).send("Hello World! yesss");
+  res.status(200).send("Hello World!");
 });
 
 const chatServer = app.listen(5000, () => {
