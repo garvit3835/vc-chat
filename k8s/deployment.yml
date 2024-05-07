@@ -19,3 +19,6 @@ spec:
           image: garvit3835/chat-server:latest
           ports:
             - containerPort: 5000
+          resources:
+            requests:
+              cpu: "10m" # Request 10 milli CPUs (0.01 CPU cores)
