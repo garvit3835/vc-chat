@@ -54,7 +54,7 @@ app.get("/", async (req: Request, res: Response) => {
 
 
 app.get("/test", async (req: Request, res: Response) => {
-  res.status(200).send("Hello World!");
+  res.status(200).send("Hello World! yesss");
 });
 
 const chatServer = app.listen(5000, () => {
