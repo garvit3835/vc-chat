@@ -23,6 +23,8 @@ const app : Express = express()
 
 // init();
 
+for (let i = 0; i < 10000000; i++){}
+
 app.get("/", (req: Request, res: Response) => {
   res.status(200).send("Hello World!");
 });
