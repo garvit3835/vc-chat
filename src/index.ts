@@ -28,12 +28,12 @@ const app : Express = express()
 
 
 app.get("/", async (req: Request, res: Response) => {
-  for (let i = 0; i < 100000000; i++){
+  for (let i = 0; i < 10000000000; i++){
     i = i - 0.5;
   }
-
+  const test = setTimeout(async() => {
     res.status(200).send("Hello World!");
-
+  }, 2000);
   
 });
 
