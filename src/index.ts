@@ -3,7 +3,7 @@ import http from "http";
 import SocketService from "./services/socket";
 import { startMessageConsumer } from "./services/kafka";
 
-const app : Express = express()
+const app: Express = express()
 
 // async function init() {
 //   startMessageConsumer();
@@ -28,13 +28,17 @@ const app : Express = express()
 
 
 app.get("/", async (req: Request, res: Response) => {
-  for (let i = 0; i < 100000000000; i++){
+  for (let i = 0; i < 100000000000; i++) {
     i = i - 0.5;
   }
 
-    res.status(200).send("Hello World!");
+  res.status(200).send("Hello World!");
 
-  
+
+});
+
+app.get("/test", async (req: Request, res: Response) => {
+  res.status(200).send("Hello World!");
 });
 
 const chatServer = app.listen(5000, () => {
