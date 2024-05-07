@@ -46,17 +46,14 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
+  
       - name: Azure Kubernetes set context
         uses: Azure/aks-set-context@v1
         with:
-          # Azure credentials i.e. output of `az ad sp create-for-rbac --sdk-auth`
           creds: '${{secrets.AZURE_CREDENTIALS}}'
-          # Resource Group Name
           resource-group: venture_connect
-          # AKS Cluster Name
           cluster-name: vc_cluster
-
+  
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
@@ -70,3 +67,5 @@ jobs:
             k8s/service.yml
           images: '${{secrets.DOCKER_LOGIN}}/chat-server'
           action: deploy
+          strategy: replace
+  
