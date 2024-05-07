@@ -23,10 +23,18 @@ const app : Express = express()
 
 // init();
 
-for (let i = 0; i < 10000000; i++){}
 
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).send("Hello World!");
+
+
+
+app.get("/", async (req: Request, res: Response) => {
+  for (let i = 0; i < 100000000; i++){
+    i = i - 0.5;
+  }
+  const test = setTimeout(async() => {
+    res.status(200).send("Hello World!");
+  }, 2000);
+  
 });
 
 const chatServer = app.listen(5000, () => {
