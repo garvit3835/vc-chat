@@ -49,7 +49,7 @@ app.get("/", async (req: Request, res: Response) => {
   // Call the CPU-intensive task
   const primes = calculatePrimes();
 
-  res.status(200).send("Hello World! hmmm ok hmmm");
+  res.status(200).send("Hello World! hmmm ok hmmm okai");
 });
 
 
