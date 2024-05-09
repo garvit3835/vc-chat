@@ -50,7 +50,7 @@ jobs:
       - name: Stage changes
         run: git add k8s/deployment.yml
 
-            # Configure Git user name and email
+      # Configure Git user name and email
       - name: Set Git user identity
         run: |
           git config --global user.email "garvit3835@gmail.com"
