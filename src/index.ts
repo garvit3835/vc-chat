@@ -58,7 +58,7 @@ app.get("/test", async (req: Request, res: Response) => {
 });
 
 const chatServer = app.listen(5000, () => {
-  console.log("chat-server listening at 5001");
+  console.log("chat-server listening at 5000");
 });
 
 export default chatServer;

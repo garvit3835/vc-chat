@@ -15,12 +15,13 @@ spec:
         name: chat-server-pod
     spec:
       containers:
-      - name: chat-server-container
-        image: ${{ secrets.DOCKER_LOGIN }}/chat-server:latest
-        ports:
-        - containerPort: 5000
-        resources:
-          requests:
-            cpu: "1m"  # Request 1 milli CPUs (0.001 CPU cores)
-          limits:
-            cpu: "2m"  # Limit CPU usage to 1 milli CPU (0.001 CPU cores)
+        - name: chat-server-container
+          image: garvit3835/chat-server:latest
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              cpu: "1m"  # Request 10 milli CPUs (0.001 CPU cores)
+            limits:
+              cpu: "1m"  # Limit CPU usage to 1 milli CPU (0.001 CPU cores)
+
