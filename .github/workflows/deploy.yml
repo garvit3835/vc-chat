@@ -2,7 +2,7 @@ name: Node.js Chat Server CI/CD
 
 on:
   push:
-    branches: 
+    branches:
       - main
   pull_request:
     branches:
@@ -33,19 +33,24 @@ jobs:
         with:
           node-version: 20.12.2
       - run: npm install
-      - run: npm run build
-      - name: Get Git commit hash
-        id: commit_hash
-        run: echo "::set-output name=commit_hash::$(git rev-parse --short HEAD)"
-      - name: Get Git tag (if available)
-        id: git_tag
-        run: echo "::set-output name=git_tag::$(git describe --tags --abbrev=0 || echo 'latest')"
-      - name: Create Docker image tag
-        id: create_tag
-        run: echo "::set-output name=image_tag::${{ steps.git_tag.outputs.git_tag }}-${{ steps.commit_hash.outputs.commit_hash }}"
-      - run: docker build -t ${{ secrets.DOCKER_LOGIN }}/chat-server:${{ steps.create_tag.outputs.image_tag }} .
-      - run: docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} 
-      - run: docker push ${{ secrets.DOCKER_LOGIN }}/chat-server:${{ steps.create_tag.outputs.image_tag }}
+      - run: npm run build  # Assuming a build script exists
+
+      # Generate a unique tag based on Git commit SHA
+      - name: Generate image tag
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          echo "## Image Tag: $IMAGE_TAG"  # Print tag for debugging
+
+      - name: Login to Docker registry
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_LOGIN }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push image
+        run: |
+          docker build -t ${{ secrets.DOCKER_LOGIN }}/chat-server:$IMAGE_TAG .
+          docker push ${{ secrets.DOCKER_LOGIN }}/chat-server:$IMAGE_TAG
 
   # deploy-to-aks:
   #   needs: build-and-push-image
