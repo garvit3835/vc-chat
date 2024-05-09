@@ -36,12 +36,13 @@ jobs:
       - run: npm run build
       - name: Set image tag as environment variable
         id: set_tag
-        run: echo "::set-env name=IMAGE_TAG::${{ github.sha }}"
+        run: echo "IMAGE_TAG=${{ github.sha }}" >> $GITHUB_ENV
       - run: docker build -t ${{ secrets.DOCKER_LOGIN }}/chat-server:${{ env.IMAGE_TAG }} .
       - run: docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
       - run: docker push ${{ secrets.DOCKER_LOGIN }}/chat-server:${{ env.IMAGE_TAG }}
       - name: Update deployment.yml
         run: sed -i "s/<version>/${{ env.IMAGE_TAG }}/g" k8s/deployment.yml
+
 
 
   # deploy-to-aks:
