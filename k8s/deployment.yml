@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: chat-server-container
-          image: garvit3835/chat-server:latest
+          image: garvit3835/chat-server:${IMAGE_TAG}
           ports:
             - containerPort: 5000
           resources:
@@ -24,4 +24,3 @@ spec:
               cpu: "1m"  # Request 10 milli CPUs (0.001 CPU cores)
             limits:
               cpu: "1m"  # Limit CPU usage to 1 milli CPU (0.001 CPU cores)
-
