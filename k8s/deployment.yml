@@ -23,4 +23,4 @@ spec:
           requests:
             cpu: "1m"  # Request 1 milli CPUs (0.001 CPU cores)
           limits:
-            cpu: "1m"  # Limit CPU usage to 1 milli CPU (0.001 CPU cores)
+            cpu: "2m"  # Limit CPU usage to 1 milli CPU (0.001 CPU cores)
