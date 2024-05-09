@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: chat-server-container
-        image: ${{ secrets.DOCKER_LOGIN }}/chat-server:20240ddf8ea1370ae51498e439b0b158f434ef76  # Use generated tag
+        image: ${{ secrets.DOCKER_LOGIN }}/chat-server:latest
         ports:
         - containerPort: 5000
         resources:
