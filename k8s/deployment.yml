@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: chat-server-container
-          image: garvit3835/chat-server:3a270d53c38e484735cf3327b45f61114f0895a2
+          image: garvit3835/chat-server:c28ad414bf79ed6f169514c90f6b51011cb631d2
           ports:
             - containerPort: 5000
           resources:
