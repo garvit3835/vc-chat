@@ -50,25 +50,26 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Get latest Docker image tag
+        run: |
+          IMAGE_TAG=$(docker run --rm ${{ secrets.DOCKER_LOGIN }}/chat-server:latest sh -c 'echo $IMAGE_TAG')
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
       - name: Update deployment.yml
         run: sed -E -i "s/garvit3835\/chat-server:[a-zA-Z0-9]+/garvit3835\/chat-server:${{ env.IMAGE_TAG }}/g" k8s/deployment.yml
-
       - name: Stage changes
         run: git add k8s/deployment.yml
-
       - name: Set Git user identity
         run: |
           git config --global user.email "garvit3835@gmail.com"
           git config --global user.name "garvit3835"
-    
       - name: Commit changes
         run: git commit -m "Update deployment.yml" k8s/deployment.yml
-  
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
+  
 
 
   # deploy-to-aks:
