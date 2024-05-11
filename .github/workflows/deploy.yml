@@ -37,7 +37,7 @@ jobs:
         with:
           args: >
               -Dsonar.organization=venture-connect
-              -Dsonar.projectKey=vc-chat
+              -Dsonar.projectKey=venture-connect_vc-chat
               -Dsonar.python.coverage.reportPaths=coverage.xml
       # - name: SonarQube scan
       #   run: sonar-scanner
