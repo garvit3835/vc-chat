@@ -9,7 +9,6 @@ on:
   pull_request:
     branches:
       - main
-  
 
 jobs:
   build-and-test:
@@ -18,9 +17,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: 20.12.2
+          node-version: '20.x'
       - run: npm install
       - run: npm test
 
@@ -32,9 +31,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: 20.12.2
+          node-version: '20.x'
       - run: npm install
       - run: npm run build
       - name: Set image tag as environment variable
@@ -44,28 +43,33 @@ jobs:
       - run: docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
       - run: docker push ${{ secrets.DOCKER_LOGIN }}/chat-server:${{ env.IMAGE_TAG }}
 
+  update-deployment-yml:
+    needs: build-and-push-image
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
       - name: Update deployment.yml
         run: sed -E -i "s/garvit3835\/chat-server:[a-zA-Z0-9]+/garvit3835\/chat-server:${{ env.IMAGE_TAG }}/g" k8s/deployment.yml
 
       - name: Stage changes
         run: git add k8s/deployment.yml
 
-      # Configure Git user name and email
       - name: Set Git user identity
         run: |
           git config --global user.email "garvit3835@gmail.com"
           git config --global user.name "garvit3835"
     
-      # Commit changes
       - name: Commit changes
         run: git commit -m "Update deployment.yml" k8s/deployment.yml
   
-      # Push changes to the repository
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
+
 
   # deploy-to-aks:
   #   needs: build-and-push-image
