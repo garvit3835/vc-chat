@@ -24,9 +24,10 @@ jobs:
       - run: npm test
 
   build-and-push-image:
-    needs: build-and-test
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
+    outputs:
+      image-tag: ${{ steps.set_tag.outputs.image_tag }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -38,12 +39,12 @@ jobs:
       - run: npm run build
       - name: Set image tag as environment variable
         id: set_tag
-        run: echo "IMAGE_TAG=${{ github.sha }}" >> $GITHUB_ENV
-      - run: docker build -t ${{ secrets.DOCKER_LOGIN }}/chat-server:${{ env.IMAGE_TAG }} .
+        run: echo "::set-output name=image_tag::${{ github.sha }}"
+      - run: docker build -t ${{ secrets.DOCKER_LOGIN }}/chat-server:${{ steps.set_tag.outputs.image_tag }} .
       - run: docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker push ${{ secrets.DOCKER_LOGIN }}/chat-server:${{ env.IMAGE_TAG }}
+      - run: docker push ${{ secrets.DOCKER_LOGIN }}/chat-server:${{ steps.set_tag.outputs.image_tag }}
 
-  update-deployment-yml:
+  update-deployment:
     needs: build-and-push-image
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
@@ -51,7 +52,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Update deployment.yml
-        run: sed -E -i "s/garvit3835\/chat-server:[a-zA-Z0-9]+/garvit3835\/chat-server:${{ env.IMAGE_TAG }}/g" k8s/deployment.yml
+        run: sed -E -i "s/garvit3835\/chat-server:[a-zA-Z0-9]+/garvit3835\/chat-server:${{ needs.build-and-push-image.outputs.image-tag }}/g" k8s/deployment.yml
 
       - name: Stage changes
         run: git add k8s/deployment.yml
