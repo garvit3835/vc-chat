@@ -32,16 +32,18 @@ jobs:
       - name: Setup SonarQube
         uses: sonarsource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: venture-connect
-          SONAR_ORGANIZATION: venture-connect
-      - name: SonarQube scan
-        run: sonar-scanner
+        with:
+          args: >
+              -Dsonar.organization=venture-connect
+              -Dsonar.projectKey=vc-chat
+      # - name: SonarQube scan
+      #   run: sonar-scanner
 
   build-and-push-image:
     runs-on: ubuntu-latest
-    needs: [build-and-test, code-scan]
+    needs: code-scan
     if: github.event_name == 'push'
     steps:
       - name: Checkout repository
