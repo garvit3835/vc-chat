@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '20.x'
       - run: npm install
@@ -29,9 +29,9 @@ jobs:
     if: github.event_name == 'push'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '20.x'
       - run: npm install
@@ -42,13 +42,13 @@ jobs:
           docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push ${{ secrets.DOCKER_LOGIN }}/chat-server:${{ github.sha }}
 
-  update-deployment-yml:
+  update-deployment:
     needs: build-and-push-image
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Update deployment.yml
         run: |
           sed -E -i "s/garvit3835\/chat-server:[a-zA-Z0-9]+/garvit3835\/chat-server:${{ github.sha }}/g" k8s/deployment.yml
