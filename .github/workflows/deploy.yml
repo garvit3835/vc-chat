@@ -24,8 +24,8 @@ jobs:
           node-version: '20.x'
       - run: npm install
       - run: npm test --coverage
-      - name: Save coverage report
-        run: mv coverage/lcov.info $GITHUB_WORKSPACE/lcov.info
+      # - name: Save coverage report
+      #   run: mv coverage/lcov.info $GITHUB_WORKSPACE/lcov.info
       - name: Find coverage report
         run: |
           # Use the find command to search for lcov.info file
