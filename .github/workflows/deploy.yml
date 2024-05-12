@@ -11,26 +11,19 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  test-and-scan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
       - run: npm install
-      - run: npm test
-      
-  code-scan:
-    runs-on: ubuntu-latest
-    needs: build-and-test
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 
+      - run: npm test --coverage
       - name: Setup SonarQube
         uses: sonarsource/sonarcloud-github-action@master
         env:
@@ -41,12 +34,13 @@ jobs:
               -Dsonar.organization=venture-connect
               -Dsonar.projectKey=venture-connect_vc-chat
               -Dsonar.qualitygate.wait=true
+              -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
       # - name: SonarQube scan
       #   run: sonar-scanner
 
   build-and-push-image:
     runs-on: ubuntu-latest
-    needs: code-scan
+    needs: test-and-scan
     if: github.event_name == 'push'
     steps:
       - name: Checkout repository
