@@ -26,6 +26,13 @@ jobs:
       - run: npm test --coverage
       - name: Save coverage report
         run: mv coverage/lcov.info $GITHUB_WORKSPACE/lcov.info
+      - name: Find coverage report
+        run: |
+          # Use the find command to search for lcov.info file
+          coverage_path=$(find . -type f -name "lcov.info")
+          # Print the path
+          echo "Coverage report path: $coverage_path"
+        
       - name: Setup SonarQube
         uses: sonarsource/sonarcloud-github-action@master
         env:
