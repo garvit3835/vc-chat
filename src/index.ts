@@ -54,44 +54,6 @@ app.get("/", async (req: Request, res: Response) => {
 
 
 app.get("/test", async (req: Request, res: Response) => {
-  const calculatePrimes = () => {
-    let primes = [];
-    for (let i = 2; i < 10000; i++) {
-      let isPrime = true;
-      for (let j = 2; j <= Math.sqrt(i); j++) {
-        if (i % j === 0) {
-          isPrime = false;
-          break;
-        }
-      }
-      if (isPrime) {
-        primes.push(i);
-      }
-    }
-    return primes;
-  };
-
-  // Call the CPU-intensive task
-  const primes = calculatePrimes();
-  const calculatePrimes2 = () => {
-    let primes = [];
-    for (let i = 2; i < 20000; i++) {
-      let isPrime = true;
-      for (let j = 2; j <= Math.sqrt(i); j++) {
-        if (i % j === 0) {
-          isPrime = false;
-          break;
-        }
-      }
-      if (isPrime) {
-        primes.push(i);
-      }
-    }
-    return primes;
-  };
-
-  // Call the CPU-intensive task
-  calculatePrimes2();
   res.status(200).send("Hello World!");
 });
 

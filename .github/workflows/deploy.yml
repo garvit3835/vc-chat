@@ -24,6 +24,8 @@ jobs:
           node-version: '20.x'
       - run: npm install
       - run: npm test --coverage
+      - name: Save coverage report
+        run: mv coverage/lcov.info $GITHUB_WORKSPACE/lcov.info
       - name: Setup SonarQube
         uses: sonarsource/sonarcloud-github-action@master
         env:
@@ -34,7 +36,7 @@ jobs:
               -Dsonar.organization=venture-connect
               -Dsonar.projectKey=venture-connect_vc-chat
               -Dsonar.qualitygate.wait=true
-              -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+              -Dsonar.javascript.lcov.reportPaths=./lcov.info
       # - name: SonarQube scan
       #   run: sonar-scanner
 
