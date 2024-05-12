@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: '20.x'
       - run: npm install
-      - run: npm test -- --coverage
+      - run: yarn jest --coverage
       # - name: Save coverage report
       #   run: mv coverage/lcov.info $GITHUB_WORKSPACE/lcov.info
       - name: Find coverage report
@@ -43,7 +43,7 @@ jobs:
               -Dsonar.organization=venture-connect
               -Dsonar.projectKey=venture-connect_vc-chat
               -Dsonar.qualitygate.wait=true
-              -Dsonar.javascript.lcov.reportPaths=./lcov.info
+              -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
       # - name: SonarQube scan
       #   run: sonar-scanner
 
