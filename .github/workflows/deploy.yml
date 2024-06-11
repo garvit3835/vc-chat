@@ -75,10 +75,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Update deployment.yml
         run: |
-          sed -E -i "s/garvit3835\/chat-ser[a-zA-Z0-9:/\-]+/garvit3835\/chat-server:${{ github.sha }}/g" k8s/deployment.yml
+          sed -E -i "s/garvit3835\/chat-ser[a-zA-Z0-9:/\-]+/garvit3835\/chat-server:${{ github.sha }}/g" k8s/application.yml
 
       - name: Stage changes
-        run: git add k8s/deployment.yml
+        run: git add k8s/application.yml
 
       - name: Set Git user identity
         run: |
@@ -86,7 +86,7 @@ jobs:
           git config --global user.name "garvit3835"
     
       - name: Commit changes
-        run: git commit -m "Update deployment.yml" k8s/deployment.yml
+        run: git commit -m "Update deployment.yml" k8s/application.yml
   
       - name: Push changes
         uses: ad-m/github-push-action@master
